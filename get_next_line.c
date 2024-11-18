@@ -1,15 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 16:00:30 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/18 16:07:02 by lgirerd          ###   ########lyon.fr   */
+/*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
+/*   Updated: 2024/11/18 16:07:09 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "get_next_line.h"
 
-char	*get_next_line(int fd);
+char	*get_next_line(int ds)
+{
+	return (NULL);
+}
