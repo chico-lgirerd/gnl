@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/19 15:13:23 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/19 16:13:29 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	bytesread = 1;
 	line = NULL;
-	// on lit
-	read_to_stack(fd, &stack, &bytesread); 
-	// on met line dans la stack
-	// on clear et on free la stack
+	read_to_stack(fd, &stack, &bytesread);
+	if (stack == NULL)
+		return (NULL);
+	extract_line(stack, &line);
+	clean_stack(&stack);
 	return (line);
 }
 
@@ -41,14 +42,106 @@ void	read_to_stack(int fd, t_list **stack, int *bytesread_ptr)
 {
 	char	*buf;
 
-	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (buf == NULL)
-		return ;
 	while (!newline(*stack) && *bytesread_ptr != 0)
 	{
-	*bytesread_ptr = (int)read(fd, buf, BUFFER_SIZE);
-	buf[*bytesread_ptr] = '\0';
+		buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (buf == NULL)
+			return ;
+		*bytesread_ptr = (int)read(fd, buf, BUFFER_SIZE);
+		if ((*stack == NULL) && *bytesread_ptr == 0 || *bytesread_ptr == -1)
+		{
+			free(buf);
+			return ;
+		}
+		buf[*bytesread_ptr] = '\0';
+		lstadd_stack(stack, buf, *bytesread_ptr);
+		free(buf);
 	}
 }
 
-int	newline()
+void	lstadd_stack(t_list **stack, char *buf_content, int bytesread)
+{
+	int		i;
+	t_list	*last;
+	t_list	*newnode;
+
+	newnode = malloc(sizeof(t_list));
+	if (newnode == NULL)
+		return ;
+	newnode->next = NULL;
+	newnode->content = malloc(bytesread * sizeof(char));
+	if (newnode->content == NULL)
+		return ;
+	i = 0;
+	while (i < bytesread)
+	{
+		newnode->content[i] = buf_content[i];
+		i++;
+	}
+	newnode->content[i] = '\0';
+	if (*stack == NULL) // au cas ou premiere node
+	{
+		*stack = newnode;
+		return ;
+	}
+	last = ft_lstlast(*stack);
+	last->next = newnode;
+}
+
+void	extract_line(t_list *stack, char **line)
+{
+	int	i;
+	int	j;
+
+	if (stack == NULL)
+		return ;
+	generate_line_mem(line, stack);
+	if (*line == NULL)
+		return ;
+	j = 0;
+	while (stack)
+	{
+		i = 0;
+		while (stack->content[i])
+		{
+			if (stack->content[i] == '\n')
+			{
+				(*line)[j++] = stack->content[i];
+				break ;
+			}
+			(*line)[j++] = stack->content[i++];
+		}
+		stack = stack->next;
+	}
+	(*line)[j] = '\0';
+}
+
+void	clean_stack(t_list **stack)
+{
+	t_list	*last;
+	t_list	*clean_node;
+	int		i;
+	int		j;
+
+	if (stack == NULL)
+		return ;
+	clean_node = malloc(sizeof(t_list));
+	if (clean_node == NULL)
+		return ;
+	clean_node->next = NULL;
+	last = ft_lstlast(*stack);
+	i = 0;
+	while (last->content[i] && last->content[i] != '\n')
+		i++;
+	if (last->content && last->content[i] == '\n')
+		i++;
+	clean_node->content = malloc(ft_strlen(((last->content) - i) + 1) * sizeof(char));
+	if (clean_node->content == NULL)
+		return ;
+	j = 0;
+	while (last->content[i])
+		clean_node->content[j++] = last->content[i++];
+	clean_node->content[j] = '\0';
+	free_stack(*stack);
+	*stack = clean_node;
+}
