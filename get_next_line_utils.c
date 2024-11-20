@@ -6,11 +6,21 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:07:55 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/19 16:01:54 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 14:48:29 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 t_list	*ft_lstlast(t_list *lst)
 {
@@ -25,14 +35,14 @@ int	newline(t_list **stack)
 {
 	int		i;
 	t_list	*current;
-	
+
 	if (stack == NULL)
 		return (0);
 	current = ft_lstlast(stack);
 	i = 0;
 	while (current->content[i])
 	{
-		if (current->content[i] == '\n');
+		if (current->content[i] == '\n')
 			return (1);
 		i++;
 	}
@@ -53,7 +63,7 @@ void	generate_line_mem(char **line, t_list *stack)
 			if (stack->content[i] == '\n')
 			{
 				length++;
-				break;
+				break ;
 			}
 			length++;
 			i++;
@@ -61,4 +71,17 @@ void	generate_line_mem(char **line, t_list *stack)
 		stack = stack->next;
 	}
 	*line = malloc((length + 1) * sizeof(char));
+}
+
+void	free_stack(t_list *stack)
+{
+	t_list	*tmp;
+
+	while (stack)
+	{
+		tmp = stack;
+		stack = stack->next;
+		free(tmp->content);
+		free(tmp);
+	}
 }

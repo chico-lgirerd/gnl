@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/19 16:13:29 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 14:47:10 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,6 @@
 
 #include <string.h>
 #include <stdio.h>
-
-char	*get_next_line(int fd)
-{
-	static t_list	*stack;
-	char			*line;
-	int				bytesread;
-
-	stack = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0) // avance pas la tete de lecture mais check la lecture du fd
-		return (NULL);
-	bytesread = 1;
-	line = NULL;
-	read_to_stack(fd, &stack, &bytesread);
-	if (stack == NULL)
-		return (NULL);
-	extract_line(stack, &line);
-	clean_stack(&stack);
-	return (line);
-}
 
 void	read_to_stack(int fd, t_list **stack, int *bytesread_ptr)
 {
@@ -79,7 +60,7 @@ void	lstadd_stack(t_list **stack, char *buf_content, int bytesread)
 		i++;
 	}
 	newnode->content[i] = '\0';
-	if (*stack == NULL) // au cas ou premiere node
+	if (*stack == NULL)
 	{
 		*stack = newnode;
 		return ;
@@ -123,8 +104,6 @@ void	clean_stack(t_list **stack)
 	int		i;
 	int		j;
 
-	if (stack == NULL)
-		return ;
 	clean_node = malloc(sizeof(t_list));
 	if (clean_node == NULL)
 		return ;
@@ -135,7 +114,8 @@ void	clean_stack(t_list **stack)
 		i++;
 	if (last->content && last->content[i] == '\n')
 		i++;
-	clean_node->content = malloc(ft_strlen(((last->content) - i) + 1) * sizeof(char));
+	clean_node->content = malloc(
+			ft_strlen(((last->content) - i) + 1) * sizeof(char));
 	if (clean_node->content == NULL)
 		return ;
 	j = 0;
@@ -144,4 +124,23 @@ void	clean_stack(t_list **stack)
 	clean_node->content[j] = '\0';
 	free_stack(*stack);
 	*stack = clean_node;
+}
+
+char	*get_next_line(int fd)
+{
+	static t_list	*stack;
+	char			*line;
+	int				bytesread;
+
+	stack = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+		return (NULL);
+	bytesread = 1;
+	line = NULL;
+	read_to_stack(fd, &stack, &bytesread);
+	if (stack == NULL)
+		return (NULL);
+	extract_line(stack, &line);
+	clean_stack(&stack);
+	return (line);
 }
