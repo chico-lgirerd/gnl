@@ -6,12 +6,12 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/20 14:47:10 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 15:28:22 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 10
+# define BUFFER_SIZE 10
 #endif
 
 #include "get_next_line.h"
