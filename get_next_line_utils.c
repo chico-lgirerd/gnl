@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:07:55 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/20 14:48:29 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 15:34:54 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-int	newline(t_list **stack)
+int	newline(t_list *stack)
 {
 	int		i;
 	t_list	*current;

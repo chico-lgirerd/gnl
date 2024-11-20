@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/20 15:28:22 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 16:01:45 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	read_to_stack(int fd, t_list **stack, int *bytesread_ptr)
 		if (buf == NULL)
 			return ;
 		*bytesread_ptr = (int)read(fd, buf, BUFFER_SIZE);
-		if ((*stack == NULL) && *bytesread_ptr == 0 || *bytesread_ptr == -1)
+		if ((*stack == NULL && *bytesread_ptr == 0) || *bytesread_ptr == -1)
 		{
 			free(buf);
 			return ;
@@ -97,33 +97,44 @@ void	extract_line(t_list *stack, char **line)
 	(*line)[j] = '\0';
 }
 
-void	clean_stack(t_list **stack)
+void    clean_stack(t_list **stack)
 {
-	t_list	*last;
-	t_list	*clean_node;
-	int		i;
-	int		j;
+    t_list  *last;
+    t_list  *clean_node;
+    int     i;
+    int     j;
 
-	clean_node = malloc(sizeof(t_list));
-	if (clean_node == NULL)
-		return ;
-	clean_node->next = NULL;
-	last = ft_lstlast(*stack);
-	i = 0;
-	while (last->content[i] && last->content[i] != '\n')
-		i++;
-	if (last->content && last->content[i] == '\n')
-		i++;
-	clean_node->content = malloc(
-			ft_strlen(((last->content) - i) + 1) * sizeof(char));
-	if (clean_node->content == NULL)
-		return ;
-	j = 0;
-	while (last->content[i])
-		clean_node->content[j++] = last->content[i++];
-	clean_node->content[j] = '\0';
-	free_stack(*stack);
-	*stack = clean_node;
+    last = ft_lstlast(*stack);
+    if (last == NULL || last->content == NULL)
+        return ;
+    i = 0;
+    while (last->content[i] && last->content[i] != '\n')
+        i++;
+    if (last->content[i] == '\n')
+        i++;
+    if (last->content[i] == '\0')
+    {
+        free_stack(*stack);
+        *stack = NULL;
+        return ;
+    }
+    clean_node = malloc(sizeof(t_list));
+    if (clean_node == NULL)
+        return ;
+    clean_node->next = NULL;
+    clean_node->content = malloc(
+        (ft_strlen(last->content + i) + 1) * sizeof(char));
+    if (clean_node->content == NULL)
+    {
+        free(clean_node);
+        return ;
+    }
+    j = 0;
+    while (last->content[i])
+        clean_node->content[j++] = last->content[i++];
+    clean_node->content[j] = '\0';
+    free_stack(*stack);
+    *stack = clean_node;
 }
 
 char	*get_next_line(int fd)
