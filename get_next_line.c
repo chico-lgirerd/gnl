@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:16 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/11/26 13:25:11 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/11/26 14:24:48 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	read_to_stack(int fd, t_list **stack, int *bytesread_ptr)
 		if ((*stack == NULL && *bytesread_ptr == 0) || *bytesread_ptr == -1)
 		{
 			free(buf);
+			free_stack(*stack);
+			*stack = NULL;
 			return ;
 		}
 		buf[*bytesread_ptr] = '\0';
@@ -50,9 +52,12 @@ void	lstadd_stack(t_list **stack, char *buf_content, int bytesread)
 	if (newnode == NULL)
 		return ;
 	newnode->next = NULL;
-	newnode->content = malloc(bytesread * sizeof(char));
+	newnode->content = malloc((bytesread + 1) * sizeof(char));
 	if (newnode->content == NULL)
+	{
+		free(newnode);
 		return ;
+	}
 	i = 0;
 	while (i < bytesread)
 	{
@@ -66,7 +71,8 @@ void	lstadd_stack(t_list **stack, char *buf_content, int bytesread)
 		return ;
 	}
 	last = ft_lstlast(*stack);
-	last->next = newnode;
+	if (last != NULL)
+		last->next = newnode;
 }
 
 void	extract_line(t_list *stack, char **line)
@@ -155,3 +161,4 @@ char	*get_next_line(int fd)
 	clean_stack(&stack);
 	return (line);
 }
+ 
