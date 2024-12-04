@@ -6,13 +6,13 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:59:01 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 15:38:54 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 16:18:27 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -40,48 +40,53 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (src_len);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_mod(char *s1, char *s2)
 {
 	char	*res;
-	int		i;
-	int		j;
+	int		s1_len;
+	int		s2_len;
 
-	i = 0;
-	j = 0;
-	res = malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	s1_len = ft_strlen(s1);
+	s2_len = 0;
+	while (s2[s2_len] != '\n' && s2[s2_len] != '\0')
+		s2_len++;
+	if (s2[s2_len] == '\n')
+		s2_len++;
+	res = malloc(s1_len + s2_len + 1);
 	if (res == NULL)
-		return ((void *)(0));
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		res[i] = s2[j];
-		i++;
-		j++;
-	}
-	res[i] = '\0';
+		return (free(s1), NULL);
+	if (s1)
+		ft_strlcpy(res, s1, s1_len + 1);
+	if (s2)
+		ft_strlcpy(res + s1_len, s2, s2_len + 1);
+	free(s1);
 	return (res);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup_mod(const char *s)
 {
+	char	*dup;
+	size_t	s_len;
 	size_t	i;
-	char	*d;
 
-	i = 0;
-	d = malloc((ft_strlen(s) * sizeof(char)) + 1);
-	if (d == NULL)
+	s_len = 0;
+	while (s[s_len] != '\n' && s_len != '\0')
+		s_len++;
+	if (s[s_len] == '\n')
+		s_len++;
+	dup = malloc(s_len + 1);
+	if (dup == NULL)
 		return (NULL);
-	while (i < ft_strlen(s))
+	i = 0;
+	while (i < s_len)
 	{
-		d[i] = s[i];
+		dup[i] = s[i];
 		i++;
 	}
-	d[i] = '\0';
-	return (d);
+	dup[i] = '\0';
+	return (dup);
 }
 
 int	line_checker(char	*str)

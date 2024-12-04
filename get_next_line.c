@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:58:28 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 15:48:11 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 16:17:40 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static void	ft_cleaner(char *s)
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1] = "\0";
-	char	*line;
-	int		b_read;
+	char		*line;
+	int			b_read;
 
 	b_read = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = ft_strdup(buffer);
+	line = ft_strdup_mod(buffer);
 	if (!line)
 		return (NULL);
 	while (b_read && line_checker(line) == 0)
@@ -61,7 +61,7 @@ char	*get_next_line(int fd)
 		if (b_read < 0)
 			return (ft_bzero_mod(buffer), free(line), NULL);
 		buffer[b_read] = '\0';
-		line = ft_strjoin(line, buffer);
+		line = ft_strjoin_mod(line, buffer);
 		if (!line)
 			return (NULL);
 	}
