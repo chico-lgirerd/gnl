@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:59:01 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 16:18:27 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 17:40:15 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*ft_strdup_mod(const char *s)
 	size_t	i;
 
 	s_len = 0;
-	while (s[s_len] != '\n' && s_len != '\0')
+	while (s[s_len] != '\n' && s[s_len] != '\0')
 		s_len++;
 	if (s[s_len] == '\n')
 		s_len++;

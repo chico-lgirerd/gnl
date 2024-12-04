@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:58:28 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 16:17:40 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 17:45:21 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,19 @@ char	*get_next_line(int fd)
 		return (free(line), NULL);
 	return (line);
 }
+
+// int	main(void)
+// {
+// 	int fd;
+// 	char *line;
+
+// 	fd = open("small.txt", O_RDONLY);
+// 	printf("Contenu du fichier\n");
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
