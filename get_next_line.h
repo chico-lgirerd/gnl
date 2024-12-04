@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:58:41 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 15:00:42 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 15:39:06 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,11 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
+
+int		line_checker(char	*str);
+size_t	ft_strlen(const char *s);
+char	*get_next_line(int fd);
+char	*ft_strdup(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif

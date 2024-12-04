@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:59:01 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 15:12:03 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 15:38:54 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,20 @@ char	*ft_strdup(const char *s)
 	}
 	d[i] = '\0';
 	return (d);
+}
+
+int	line_checker(char	*str)
+{
+	size_t	i;
+
+	i = 0;
+	if (ft_strlen(str + i) == 0)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lgirerd <lgirerd@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:58:28 by lgirerd           #+#    #+#             */
-/*   Updated: 2024/12/04 15:08:06 by lgirerd          ###   ########lyon.fr   */
+/*   Updated: 2024/12/04 15:48:11 by lgirerd          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	ft_bzero_mod(char *s)
 	}
 }
 
-static void	clean(char *s)
+static void	ft_cleaner(char *s)
 {
 	size_t	i;
 	size_t	j;
@@ -41,4 +41,32 @@ static void	clean(char *s)
 		j++;
 	}
 	s[j] = '\0';
+}
+
+char	*get_next_line(int fd)
+{
+	static char	buffer[BUFFER_SIZE + 1] = "\0";
+	char	*line;
+	int		b_read;
+
+	b_read = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	line = ft_strdup(buffer);
+	if (!line)
+		return (NULL);
+	while (b_read && line_checker(line) == 0)
+	{
+		b_read = read(fd, buffer, BUFFER_SIZE);
+		if (b_read < 0)
+			return (ft_bzero_mod(buffer), free(line), NULL);
+		buffer[b_read] = '\0';
+		line = ft_strjoin(line, buffer);
+		if (!line)
+			return (NULL);
+	}
+	ft_cleaner(buffer);
+	if (line[0] == '\0')
+		return (free(line), NULL);
+	return (line);
 }
